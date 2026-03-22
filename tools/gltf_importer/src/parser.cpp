@@ -330,19 +330,24 @@ T3DM::T3DMData T3DM::parseGLTF(const char *gltfPath, const T3DM::Config &config)
       std::vector<VertexT3D> verticesT3D{};
       verticesT3D.resize(vertices.size());
 
-      auto &material = t3dm.materials[model.materialName];
-      float texSizeX = material.texA.texWidth;
-      float texSizeY = material.texA.texHeight;
+      Config::MatInfo matInfo{};
+      if(!config.getMaterialInfo || !config.getMaterialInfo(prim->material->name, matInfo))
+      {
+        auto &material = t3dm.materials[model.materialName];
+        matInfo.texSizeX = material.texA.texWidth;
+        matInfo.texSizeY = material.texA.texHeight;
+        matInfo.pointFilter = material.uvFilterAdjust;
+      }
 
-      if(texSizeX == 0)texSizeX = 32;
-      if(texSizeY == 0)texSizeY = 32;
+      if(matInfo.texSizeX == 0)matInfo.texSizeX = 32;
+      if(matInfo.texSizeY == 0)matInfo.texSizeY = 32;
 
       // convert vertices
       Mat4 mat = config.ignoreTransforms ? Mat4{} : parseNodeMatrix(node, true);
       for(int k = 0; k < vertices.size(); k++) {
         convertVertex(
-          config.globalScale, texSizeX, texSizeY, vertices[k], verticesT3D[k],
-          mat, matrixStack, material.uvFilterAdjust
+          config.globalScale, matInfo.texSizeX, matInfo.texSizeY, vertices[k], verticesT3D[k],
+          mat, matrixStack, matInfo.pointFilter
         );
       }
 

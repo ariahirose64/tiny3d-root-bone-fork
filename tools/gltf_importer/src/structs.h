@@ -271,6 +271,18 @@ namespace T3DM
     std::string assetPathFull{};
     std::filesystem::path projectPath{};
 
+    struct MatInfo
+    {
+      float texSizeX;
+      float texSizeY;
+      bool pointFilter;
+    };
+
+    std::function<bool(
+      const std::string &matName,
+      MatInfo &matInfo
+    )> getMaterialInfo{};
+
     std::function<bool(
       std::shared_ptr<BinaryFile> f,
       const Material &material,
