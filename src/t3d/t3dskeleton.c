@@ -52,6 +52,7 @@ void t3d_skeleton_blend(const T3DSkeleton *skelRes, const T3DSkeleton *skelA, co
     T3DBone *boneA = &skelA->bones[i];
     T3DBone *boneB = &skelB->bones[i];
 
+    boneRes->hasChanged = true;
     t3d_quat_nlerp(&boneRes->rotation, &boneA->rotation, &boneB->rotation, factor);
     t3d_vec3_lerp(&boneRes->position, &boneA->position, &boneB->position, factor);
     t3d_vec3_lerp(&boneRes->scale, &boneA->scale, &boneB->scale, factor);
