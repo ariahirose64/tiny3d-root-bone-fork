@@ -114,10 +114,10 @@ T3DM::T3DMData T3DM::parseGLTF(const char *gltfPath, const T3DM::Config &config)
         }
         p = p->parent;
       }
-      if (ancestorHasTransforms) {
+/*      if (ancestorHasTransforms) {
         throw std::runtime_error("At least one ancestor of armature/skin root bone has significant transforms! (in file: " + std::string(gltfPath) + ")");
       }
-
+*/
       Bone armature = parseBoneTree(config, bone, nullptr, boneCount);
 
       //printBoneTree(armature, 0);
